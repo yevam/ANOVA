@@ -1,0 +1,14 @@
+ads=read.csv("C:\\Users\\OmarYeva\\Desktop\\GGUFall2015\\DataAnalytics\\advertisers_2013.csv")
+spend=ads[2:601,1]
+internet=ads[1:101,2]
+magazine=ads[102:201,2]
+newspaper=ads[202:301,2]
+outdoor=ads[302:401,2]
+radio=ads[402:501,2]
+tv=ads[502:601,2]
+type=ads[2:601,2]
+table(type)
+aggregate(spend, by=list(type), FUN=mean)
+aggregate(spend, by=list(type), FUN=sd)
+fit<-aov(spend~type)
+summary(fit)
