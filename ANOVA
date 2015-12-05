@@ -1,14 +1,63 @@
 ads=read.csv("C:\\Users\\OmarYeva\\Desktop\\GGUFall2015\\DataAnalytics\\advertisers_2013.csv")
 spend=ads[2:601,1]
-internet=ads[1:101,2]
-magazine=ads[102:201,2]
-newspaper=ads[202:301,2]
-outdoor=ads[302:401,2]
-radio=ads[402:501,2]
-tv=ads[502:601,2]
-type=ads[2:601,2]
-table(type)
+type=ads[2:601,2]table(type)
+type
+internet  magazine newspaper   outdoor     radio        tv 
+99       100       100       100       100       100 
 aggregate(spend, by=list(type), FUN=mean)
+Group.1         x
+1  internet  42.65758
+2  magazine  81.99100
+3 newspaper  41.60500
+4   outdoor  11.70100
+5     radio  24.38700
+6        tv 375.82600
 aggregate(spend, by=list(type), FUN=sd)
+Group.1         x
+1  internet  43.20023
+2  magazine 135.74721
+3 newspaper  62.82075
+4   outdoor  17.70704
+5     radio  36.05998
+6        tv 288.95655
 fit<-aov(spend~type)
 summary(fit)
+Df   Sum Sq Mean Sq F value Pr(>F)    
+type          5  9650814 1930163   105.7 <2e-16 ***
+Residuals   593 10823760   18253                   
+---
+Signif. codes:  0 â€˜***â€™ 0.001 â€˜**â€™ 0.01 â€˜*â€™ 0.05 â€˜.â€™ 0.1 â€˜ â€™ 1
+1 observation deleted due to missingness 
+[1] 0
+###############################################
+> sum(is.na(ads))
+[1] 0
+> sum(is.null(ads))
+[1] 0
+
+plotmeans(spend~type,xlab="Type", ylab="Spend",barcol="red",main="Mean Plot\nwith 95% CI")
+TukeyHSD(fit)
+Tukey multiple comparisons of means
+95% family-wise confidence level
+
+Fit: aov(formula = spend ~ type)
+
+$type
+diff        lwr        upr     p adj
+magazine-internet   39.333424  -15.43046  94.097309 0.3134952
+newspaper-internet  -1.052576  -55.81646  53.711309 0.9999999
+outdoor-internet   -30.956576  -85.72046  23.807309 0.5881412
+radio-internet     -18.270576  -73.03446  36.493309 0.9320471
+tv-internet        333.168424  278.40454 387.932309 0.0000000
+newspaper-magazine -40.386000  -95.01211  14.240114 0.2814962
+outdoor-magazine   -70.290000 -124.91611 -15.663886 0.0034694
+radio-magazine     -57.604000 -112.23011  -2.977886 0.0319178
+tv-magazine        293.835000  239.20889 348.461114 0.0000000
+outdoor-newspaper  -29.904000  -84.53011  24.722114 0.6219401
+radio-newspaper    -17.218000  -71.84411  37.408114 0.9461554
+tv-newspaper       334.221000  279.59489 388.847114 0.0000000
+radio-outdoor       12.686000  -41.94011  67.312114 0.9857400
+tv-outdoor         364.125000  309.49889 418.751114 0.0000000
+tv-radio           351.439000  296.81289 406.065114 0.0000000
+
+> plot(cld(tuk, level=.05), col="red")
